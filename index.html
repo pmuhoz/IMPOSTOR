@@ -14,6 +14,7 @@
       --border: #2e2e2e;
       --accent: #e63946;
       --accent2: #f4a261;
+      --green: #52b788;
       --text: #f0f0f0;
       --muted: #888;
     }
@@ -31,217 +32,96 @@
       padding: 16px;
     }
 
-    .screen {
-      display: none;
-      width: 100%;
-      max-width: 400px;
-      animation: fadeIn 0.25s ease;
-    }
+    .screen { display: none; width: 100%; max-width: 420px; animation: fadeIn 0.25s ease; }
     .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .titulo { font-family:'Bebas Neue',sans-serif; font-size:4rem; letter-spacing:4px; color:var(--accent); text-align:center; line-height:1; }
+    .subtitulo { text-align:center; color:var(--muted); font-size:0.9rem; margin-top:6px; margin-bottom:36px; }
+    h2 { font-size:1.1rem; font-weight:700; margin-bottom:14px; color:var(--text); }
 
-    /* Typography */
-    .titulo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 4rem;
-      letter-spacing: 4px;
-      color: var(--accent);
-      text-align: center;
-      line-height: 1;
-    }
-    .subtitulo {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 6px;
-      margin-bottom: 36px;
-    }
-    h2 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 14px;
-      color: var(--text);
-    }
-
-    /* Inputs */
     input {
-      width: 100%;
-      padding: 13px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      outline: none;
-      transition: border-color 0.2s;
+      width:100%; padding:13px 16px;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:8px; color:var(--text);
+      font-family:'Inter',sans-serif; font-size:1rem;
+      margin-bottom:10px; outline:none; transition:border-color 0.2s;
     }
-    input:focus { border-color: var(--accent); }
-    input.codigo-input {
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
+    input:focus { border-color:var(--accent); }
+    input.codigo-input { text-transform:uppercase; letter-spacing:8px; text-align:center; font-size:1.4rem; font-weight:700; }
 
-    /* Botones */
     button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 8px;
-      border: none;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 8px;
-      transition: opacity 0.15s, transform 0.1s;
+      width:100%; padding:14px; border-radius:8px; border:none;
+      font-family:'Inter',sans-serif; font-size:0.95rem; font-weight:700;
+      cursor:pointer; margin-bottom:8px; transition:opacity 0.15s, transform 0.1s;
     }
-    button:active:not(:disabled) { transform: scale(0.98); }
-    button:disabled { opacity: 0.35; cursor: not-allowed; }
-    .btn-rojo { background: var(--accent); color: white; }
-    .btn-gris { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .btn-verde { background: #2d6a4f; color: white; }
+    button:active:not(:disabled) { transform:scale(0.98); }
+    button:disabled { opacity:0.35; cursor:not-allowed; }
+    .btn-rojo { background:var(--accent); color:white; }
+    .btn-gris { background:var(--surface); color:var(--text); border:1px solid var(--border); }
+    .btn-verde { background:#2d6a4f; color:white; }
 
-    /* Código de sala */
-    .sala-codigo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3.5rem;
-      letter-spacing: 12px;
-      color: var(--accent);
-      text-align: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 12px 12px;
-      margin-bottom: 4px;
-    }
-    .sala-codigo-label {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.78rem;
-      margin-bottom: 24px;
-    }
+    .sala-codigo { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; letter-spacing:12px; color:var(--accent); text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 12px 12px; margin-bottom:4px; }
+    .sala-codigo-label { text-align:center; color:var(--muted); font-size:0.78rem; margin-bottom:24px; }
 
-    /* Lista jugadores */
-    .player-list { list-style: none; margin-bottom: 18px; }
-    .player-list li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 6px;
-      font-size: 0.95rem;
-    }
-    .player-list li .badge {
-      font-size: 0.7rem;
-      background: var(--border);
-      color: var(--muted);
-      padding: 2px 7px;
-      border-radius: 20px;
-      margin-left: auto;
-    }
-    .player-list li .badge.tu { background: #1d3a2f; color: #52b788; }
+    .player-list { list-style:none; margin-bottom:18px; }
+    .player-list li { display:flex; align-items:center; gap:10px; padding:11px 14px; background:var(--surface); border:1px solid var(--border); border-radius:8px; margin-bottom:6px; font-size:0.95rem; }
+    .player-list li .badge { font-size:0.7rem; background:var(--border); color:var(--muted); padding:2px 7px; border-radius:20px; margin-left:auto; }
+    .player-list li .badge.tu { background:#1d3a2f; color:var(--green); }
 
-    /* Carta */
-    .carta {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px 28px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.2s;
-      margin-bottom: 16px;
-    }
-    .carta:hover { border-color: var(--accent); }
-    .carta-icon { font-size: 3.5rem; margin-bottom: 14px; }
-    .carta-tap { color: var(--muted); font-size: 0.9rem; margin-bottom: 6px; }
-    .carta-hint { color: var(--border); font-size: 0.8rem; margin-top: 10px; }
+    .carta { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:40px 28px; text-align:center; cursor:pointer; transition:border-color 0.2s; margin-bottom:16px; }
+    .carta:hover { border-color:var(--accent); }
+    .carta-icon { font-size:3.5rem; margin-bottom:14px; }
+    .carta-palabra { font-family:'Bebas Neue',sans-serif; font-size:3rem; letter-spacing:2px; color:var(--accent2); margin:10px 0 4px; }
+    .carta-impostor-titulo { font-family:'Bebas Neue',sans-serif; font-size:2.4rem; letter-spacing:2px; color:var(--accent); margin:10px 0 6px; }
+    .carta-pista { font-size:1rem; color:var(--text); background:#222; border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-top:12px; font-style:italic; }
+    .carta-pista-label { font-size:0.75rem; color:var(--muted); margin-bottom:4px; }
 
-    .carta-palabra {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3rem;
-      letter-spacing: 2px;
-      color: var(--accent2);
-      margin: 10px 0 4px;
-    }
-    .carta-impostor-titulo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.8rem;
-      letter-spacing: 2px;
-      color: var(--accent);
-      margin: 10px 0 4px;
-    }
-    .carta-categoria { color: var(--muted); font-size: 0.85rem; }
+    .divider { border:none; border-top:1px solid var(--border); margin:18px 0; }
+    .error { color:var(--accent); font-size:0.85rem; text-align:center; margin-bottom:10px; min-height:20px; }
+    .espera-status { text-align:center; color:var(--muted); font-size:0.85rem; margin-top:8px; }
+    .hint-text { color:var(--muted); font-size:0.8rem; text-align:center; margin-bottom:8px; }
 
-    /* Divider */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 18px 0;
+    /* Categoría selector */
+    .cat-selector { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+    .cat-check { display:none; }
+    .cat-label {
+      display:flex; align-items:center; gap:8px;
+      padding:10px 12px; background:var(--surface);
+      border:1px solid var(--border); border-radius:8px;
+      cursor:pointer; font-size:0.82rem; transition:border-color 0.2s, background 0.2s;
+      user-select:none;
     }
+    .cat-check:checked + .cat-label { border-color:var(--accent); background:#2a1416; color:var(--text); }
+    .cat-dot { width:8px; height:8px; border-radius:50%; background:var(--border); flex-shrink:0; transition:background 0.2s; }
+    .cat-check:checked + .cat-label .cat-dot { background:var(--accent); }
 
-    /* Error */
-    .error {
-      color: var(--accent);
-      font-size: 0.85rem;
-      text-align: center;
-      margin-bottom: 10px;
-      min-height: 20px;
+    /* Dificultad selector */
+    .dif-options { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px; margin-bottom:16px; }
+    .dif-radio { display:none; }
+    .dif-label {
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      padding:14px 8px; background:var(--surface);
+      border:1px solid var(--border); border-radius:8px;
+      cursor:pointer; text-align:center; transition:border-color 0.2s, background 0.2s;
+      user-select:none;
     }
+    .dif-radio:checked + .dif-label { border-color:var(--accent); background:#2a1416; }
+    .dif-emoji { font-size:1.5rem; }
+    .dif-nombre { font-size:0.8rem; font-weight:700; }
+    .dif-desc { font-size:0.7rem; color:var(--muted); }
 
-    /* Espera status */
-    .espera-status {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-      margin-top: 8px;
-    }
-    .hint-text {
-      color: var(--muted);
-      font-size: 0.8rem;
-      text-align: center;
-      margin-bottom: 8px;
-    }
+    .jugadores-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .jugadores-count { font-size:0.8rem; color:var(--muted); }
 
-    /* Jugando categoria pill */
-    .cat-pill {
-      display: inline-block;
-      background: #1d1d1d;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-    .cat-pill span { color: var(--text); font-weight: 600; }
-
-    /* Contador jugadores */
-    .jugadores-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .jugadores-count {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
+    .select-all-row { display:flex; justify-content:flex-end; gap:8px; margin-bottom:10px; }
+    .link-btn { background:none; border:none; color:var(--accent); font-size:0.78rem; cursor:pointer; padding:0; width:auto; margin:0; text-decoration:underline; font-family:'Inter',sans-serif; }
+    .link-btn:hover { opacity:0.8; }
   </style>
 </head>
 <body>
 
-<!-- ============================
-     PANTALLA: Inicio
-============================= -->
+<!-- INICIO -->
 <div class="screen active" id="screen-inicio">
   <div class="titulo">El Impostor</div>
   <p class="subtitulo">¿Quién se la sabe y quién la está inventando?</p>
@@ -249,9 +129,7 @@
   <button class="btn-gris" onclick="ir('screen-unirse')">Unirse a sala</button>
 </div>
 
-<!-- ============================
-     PANTALLA: Crear sala
-============================= -->
+<!-- CREAR SALA -->
 <div class="screen" id="screen-crear">
   <h2>Nueva sala</h2>
   <input type="text" id="inp-nombre-crear" placeholder="Tu nombre" maxlength="20" autocomplete="off">
@@ -260,9 +138,7 @@
   <button class="btn-gris" onclick="ir('screen-inicio')">Volver</button>
 </div>
 
-<!-- ============================
-     PANTALLA: Unirse
-============================= -->
+<!-- UNIRSE -->
 <div class="screen" id="screen-unirse">
   <h2>Unirse a sala</h2>
   <input type="text" id="inp-nombre-unirse" placeholder="Tu nombre" maxlength="20" autocomplete="off">
@@ -272,9 +148,7 @@
   <button class="btn-gris" onclick="ir('screen-inicio')">Volver</button>
 </div>
 
-<!-- ============================
-     PANTALLA: Sala de espera
-============================= -->
+<!-- SALA DE ESPERA -->
 <div class="screen" id="screen-espera">
   <div class="sala-codigo" id="display-codigo">----</div>
   <p class="sala-codigo-label">Código de sala — compártelo con los demás</p>
@@ -287,39 +161,83 @@
 
   <div id="controles-host" style="display:none">
     <p class="hint-text" id="hint-min">Necesitas al menos 3 jugadores para empezar</p>
-    <button class="btn-verde" id="btn-girar" onclick="iniciarJuego()" disabled>Girar la tómbola 🎡</button>
+    <button class="btn-verde" id="btn-girar" onclick="ir('screen-config')" disabled>Configurar y girar 🎡</button>
   </div>
   <p class="espera-status" id="texto-espera">Esperando que el anfitrión inicie el juego...</p>
 </div>
 
-<!-- ============================
-     PANTALLA: Revelar carta
-============================= -->
+<!-- CONFIGURACIÓN (solo host) -->
+<div class="screen" id="screen-config">
+  <h2>Categorías</h2>
+  <div class="select-all-row">
+    <button class="link-btn" onclick="seleccionarTodas(true)">Todas</button>
+    <button class="link-btn" onclick="seleccionarTodas(false)">Ninguna</button>
+  </div>
+  <div class="cat-selector" id="cat-selector"></div>
+
+  <h2 style="margin-top:4px">Pista para el impostor</h2>
+  <p style="color:var(--muted);font-size:0.8rem;margin-bottom:12px;">¿Qué tan cerca estará la pista de la palabra real?</p>
+  <div class="dif-options">
+    <div>
+      <input type="radio" name="dificultad" id="dif-facil" class="dif-radio" value="0">
+      <label class="dif-label" for="dif-facil">
+        <span class="dif-emoji">🟢</span>
+        <span class="dif-nombre">Fácil</span>
+        <span class="dif-desc">Pista obvia</span>
+      </label>
+    </div>
+    <div>
+      <input type="radio" name="dificultad" id="dif-medio" class="dif-radio" value="1" checked>
+      <label class="dif-label" for="dif-medio">
+        <span class="dif-emoji">🟡</span>
+        <span class="dif-nombre">Medio</span>
+        <span class="dif-desc">Pista moderada</span>
+      </label>
+    </div>
+    <div>
+      <input type="radio" name="dificultad" id="dif-dificil" class="dif-radio" value="2">
+      <label class="dif-label" for="dif-dificil">
+        <span class="dif-emoji">🔴</span>
+        <span class="dif-nombre">Difícil</span>
+        <span class="dif-desc">Pista vaga</span>
+      </label>
+    </div>
+    <div>
+      <input type="radio" name="dificultad" id="dif-nada" class="dif-radio" value="3">
+      <label class="dif-label" for="dif-nada">
+        <span class="dif-emoji">🚫</span>
+        <span class="dif-nombre">Sin pista</span>
+        <span class="dif-desc">Solo suerte</span>
+      </label>
+    </div>
+  </div>
+
+  <p class="error" id="err-config"></p>
+  <button class="btn-rojo" onclick="iniciarJuego()">¡Girar la tómbola! 🎡</button>
+  <button class="btn-gris" onclick="ir('screen-espera')">Volver</button>
+</div>
+
+<!-- REVELAR CARTA -->
 <div class="screen" id="screen-revelar">
   <div class="carta" onclick="revelarCarta()">
     <div class="carta-icon">🃏</div>
-    <div class="carta-tap">Toca para ver tu carta</div>
-    <div class="carta-hint">Asegúrate que nadie más vea tu pantalla</div>
+    <div style="color:var(--muted);font-size:0.9rem;margin-bottom:6px;">Toca para ver tu carta</div>
+    <div style="color:var(--border);font-size:0.8rem;margin-top:10px;">Asegúrate que nadie más vea tu pantalla</div>
   </div>
 </div>
 
-<!-- ============================
-     PANTALLA: Carta (jugador o impostor)
-============================= -->
+<!-- CARTA JUGADOR -->
 <div class="screen" id="screen-carta">
   <div id="carta-contenido" class="carta" style="cursor:default; margin-bottom:16px;"></div>
-  <p style="color:var(--muted); font-size:0.82rem; text-align:center; margin-bottom:14px;">
+  <p style="color:var(--muted);font-size:0.82rem;text-align:center;margin-bottom:14px;">
     Memoriza bien tu carta antes de continuar
   </p>
   <button class="btn-rojo" onclick="irAJugando()">Listo ✓</button>
 </div>
 
-<!-- ============================
-     PANTALLA: Jugando
-============================= -->
+<!-- JUGANDO -->
 <div class="screen" id="screen-jugando">
   <h2>En juego</h2>
-  <div class="cat-pill">Categoría: <span id="jugando-cat"></span></div>
 
   <div class="jugadores-header">
     <h2>Jugadores</h2>
@@ -328,20 +246,16 @@
   <ul class="player-list" id="lista-jugando"></ul>
 
   <hr class="divider">
-  <button class="btn-gris" onclick="verCartaDeNuevo()">Ver mi carta de nuevo 👁</button>
+  <button class="btn-gris" onclick="irACartaNuevo()">Ver mi carta de nuevo 👁</button>
   <div id="controles-host-jugando" style="display:none">
     <button class="btn-verde" onclick="nuevaRonda()">Nueva ronda 🔄</button>
   </div>
-  <button class="btn-gris" style="margin-top:6px; color:var(--accent); border-color:var(--accent)" onclick="salirSala()">Salir de la sala</button>
+  <button class="btn-gris" style="margin-top:6px;color:var(--accent);border-color:var(--accent)" onclick="salirSala()">Salir de la sala</button>
 </div>
-
-<!-- ============================
-     DATOS JUEGO (ocultos)
-============================= -->
 
 <script>
 // ======================================================
-// FIREBASE CONFIG — Reemplaza con los datos de tu proyecto
+// FIREBASE CONFIG
 // ======================================================
 const firebaseConfig = {
   apiKey: "AIzaSyAhtM59sHae66NJ1UA9IZGkbPEqoxtM_bo",
@@ -353,61 +267,156 @@ const firebaseConfig = {
   appId: "1:72187753360:web:b9a2b7dc15d1f9129c3915",
   measurementId: "G-KZ3EMF1JHL"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // ======================================================
-// CATEGORÍAS (Español Chileno)
+// CATEGORÍAS CON PISTAS [fácil, medio, difícil]
 // ======================================================
 const CATEGORIAS = {
-  "Comida Chilena": [
-    "asado", "empanada", "cazuela", "humita", "sopaipilla",
-    "mote con huesillos", "pastel de choclo", "charquicán",
-    "completo italiano", "chorrillana", "prietas", "longaniza",
-    "porotos granados", "pantrucas", "milcao", "pebre", "chancho en piedra"
-  ],
-  "Lugares de Chile": [
-    "Valparaíso", "Pucón", "Torres del Paine", "San Pedro de Atacama",
-    "Chiloé", "Viña del Mar", "La Serena", "Antofagasta",
-    "Puerto Montt", "Temuco", "el Cajón del Maipo", "Isla de Pascua",
-    "Zapallar", "Tongoy", "Dichato", "Maitencillo", "Copiapó"
-  ],
-  "Chilenismos": [
-    "bacán", "caña", "carrete", "fome", "luca", "penca",
-    "pololo", "taco", "al tiro", "de una", "cachái", "pelambre",
-    "copete", "choro", "estar curado", "pasar piola", "hacerse el leso",
-    "a la pinta", "raja", "gallo"
-  ],
-  "Animales de Chile": [
-    "puma", "cóndor", "huemul", "pudú", "chinchilla",
-    "zorro", "lobo marino", "pingüino",
-    "flamenco", "coipo",
-    "guanaco", "queltehue", "diucón", "chuncho"
-  ],
-  "Oficios y Trabajos": [
-    "profe", "doctor", "panadero", "mecánico", "carpintero",
-    "carabinero", "bombero", "enfermera", "abogado", "contador",
-    "gásfiter", "electricista", "taxista", "cocinero", "veterinario",
-    "cartero", "alcalde", "cura"
-  ],
-  "Deporte": [
-    "fútbol", "tenis", "básquetbol", "boxeo", "ciclismo",
-    "natación", "esquí", "atletismo", "vóleibol", "rugby",
-    "rodeo", "rayuela", "handball", "escalada", "palín"
-  ],
-  "El Carrete": [
-    "piscola", "terremoto", "chela", "jote", "borgoña",
-    "asado de cumpleaños", "picoteo", "ramada", "quinceañera",
-    "previa", "parranda", "convite", "curado perdido",
-    "bailar cueca", "karaoke", "fiesta de promoción"
-  ],
-  "Películas y Series": [
-    "Avatar", "Titanic", "Shrek", "Harry Potter", "El rey león",
-    "Game of Thrones", "Breaking Bad", "Stranger Things",
-    "La Casa de Papel", "Juegos del Calamar", "Toy Story", "Friends",
-    "Narcos", "Élite", "El Señor de los Anillos"
-  ]
+  "Comida Chilena": {
+    "asado":           ["Brasas", "Humo", "Ritual"],
+    "empanada":        ["Repulgue", "Pino", "Aceituna"],
+    "cazuela":         ["Caldo", "Zapallo", "Olla"],
+    "humita":          ["Nudo", "Choclo", "Hoja"],
+    "sopaipilla":      ["Mostaza", "Lluvia", "Fritura"],
+    "mote con huesillos": ["Ambar", "Trigo", "Verano"],
+    "pastel de choclo":   ["Greda", "Pino", "Dulzura"],
+    "charquicán":         ["Guiso", "Huevo", "Machacado"],
+    "completo italiano":  ["Tricolor", "Vienesa", "Palta"],
+    "chorrillana":        ["Puerto", "Cebolla", "Montaña"],
+    "prietas":            ["Sangre", "Negra", "Tripa"],
+    "longaniza":          ["Ahumado", "Chillán", "Embutido"],
+    "porotos granados":   ["Albahaca", "Verano", "Legumbre"],
+    "pantrucas":          ["Masa", "Sopa", "Harina"],
+    "pebre":              ["Cilantro", "Mortero", "Picor"]
+  },
+  "Lugares de Chile": {
+    "Valparaíso":         ["Anfiteatro", "Escaleras", "Puerto"],
+    "Pucón":              ["Magma", "Lago", "Aventura"],
+    "Torres del Paine":   ["Granito", "Macizo", "Trekking"],
+    "San Pedro de Atacama":["Adobe", "Sal", "Astro"],
+    "Chiloé":             ["Mito", "Palafito", "Tejuela"],
+    "Viña del Mar":       ["Gaviota", "Jardín", "Estero"],
+    "La Serena":          ["Faro", "Papaya", "Campanario"],
+    "Antofagasta":        ["Cobre", "Portada", "Desierto"],
+    "Puerto Montt":       ["Seno", "Mariscos", "Ensenada"],
+    "Temuco":             ["Ñielol", "Frontera", "Lluvia"],
+    "el Cajón del Maipo": ["Yeso", "Escapada", "Cordillera"],
+    "Isla de Pascua":     ["Moái", "Toba", "Ombligo"],
+    "Zapallar":           ["Elite", "Roca", "Exclusivo"],
+    "Tongoy":             ["Ostión", "Arena", "Península"],
+    "Dichato":            ["Bahía", "Tsunami", "Sur"],
+    "Maitencillo":        ["Parapente", "Bosque", "Olas"],
+    "Copiapó":            ["Mina", "Desierto", "Florido"]
+  },
+  "Chilenismos": {
+    "bacán":           ["Óptimo", "Superior", "Máximo"],
+    "caña":            ["Resaca", "Sed", "Tributo"],
+    "carrete":         ["Juerga", "Noche", "Social"],
+    "fome":            ["Plano", "Lento", "Aburrido"],
+    "luca":            ["Mil", "Púrpura", "Lana"],
+    "penca":           ["Malo", "Bajo", "Pobre"],
+    "pololo":          ["Novio", "Vínculo", "Insecto"],
+    "taco":            ["Tapón", "Bocina", "Espera"],
+    "al tiro":         ["Pronto", "Veloz", "Ahora"],
+    "cachái":          ["Viste", "Entiendes", "Captas"],
+    "pelambre":        ["Chisme", "Lengua", "Crítica"],
+    "copete":          ["Trago", "Libación", "Alcohol"],
+    "choro":           ["Bravo", "Audaz", "Duro"],
+    "estar curado":    ["Ebrio", "Pasado", "Borracho"],
+    "pasar piola":     ["Sutil", "Oculto", "Invisible"],
+    "a la pinta":      ["Exacto", "Perfecto", "Idóneo"]
+  },
+  "Animales de Chile": {
+    "puma":           ["Garras", "Sigilo", "León"],
+    "cóndor":         ["Vuelo", "Andes", "Escudo"],
+    "huemul":         ["Ciervo", "Sur", "Astas"],
+    "pudú":           ["Bambi", "Monte", "Pequeño"],
+    "chinchilla":     ["Pelo", "Roedor", "Andino"],
+    "zorro":          ["Astuto", "Cola", "Culpeo"],
+    "lobo marino":    ["Aletas", "Rugido", "Caleta"],
+    "pingüino":       ["Hielo", "Traje", "Nadar"],
+    "flamenco":       ["Rosado", "Salar", "Pata"],
+    "coipo":          ["Río", "Dientes", "Agua"],
+    "guanaco":        ["Lana", "Cuello", "Escupitajo"],
+    "queltehue":      ["Grito", "Espuela", "Alarma"],
+    "diucón":         ["Ojo", "Gris", "Vuelo"],
+    "chuncho":        ["Búho", "Suerte", "Bosque"]
+  },
+  "Oficios y Trabajos": {
+    "profe":         ["Aula", "Tiza", "Guía"],
+    "doctor":        ["Bata", "Salud", "Receta"],
+    "panadero":      ["Harina", "Horno", "Masa"],
+    "mecánico":      ["Grasa", "Motor", "Llave"],
+    "carpintero":    ["Viruta", "Clavo", "Lija"],
+    "carabinero":    ["Orden", "Verde", "Ley"],
+    "bombero":       ["Sirena", "Hacha", "Grifo"],
+    "enfermera":     ["Suero", "Turno", "Cuidado"],
+    "abogado":       ["Leyes", "Juicio", "Pleito"],
+    "contador":      ["Libros", "IVA", "Balance"],
+    "gásfiter":      ["Llave", "Sifón", "Goteo"],
+    "electricista":  ["Fase", "Tierra", "Corte"],
+    "taxista":       ["Ruta", "Radio", "Techo"],
+    "cocinero":      ["Filo", "Sabor", "Fuego"],
+    "veterinario":   ["Pelaje", "Clínica", "Fauna"],
+    "cartero":       ["Sobre", "Ruta", "Bici"],
+    "alcalde":       ["Comuna", "Voto", "Gestión"],
+    "cura":          ["Misa", "Sotana", "Fe"]
+  },
+  "Deporte": {
+    "fútbol":     ["Cancha", "Gol", "Balón"],
+    "tenis":      ["Red", "Ace", "Set"],
+    "básquetbol": ["Aro", "Dribling", "Tablero"],
+    "boxeo":      ["Guantes", "Ring", "KO"],
+    "ciclismo":   ["Pedal", "Cadena", "Ruta"],
+    "natación":   ["Agua", "Carril", "Cloro"],
+    "esquí":      ["Nieve", "Cumbres", "Tablas"],
+    "atletismo":  ["Pista", "Valla", "Salto"],
+    "vóleibol":   ["Red", "Saque", "Bloqueo"],
+    "rugby":      ["Tackle", "Ovalado", "Melé"],
+    "rodeo":      ["Manta", "Caballo", "Novillo"],
+    "rayuela":    ["Tejo", "Barro", "Línea"],
+    "handball":   ["Arco", "Salto", "Mano"],
+    "escalada":   ["Roca", "Agarre", "Cuerda"],
+    "palín":      ["Chueca", "Ancestral", "Ritual"]
+  },
+  "El Carrete": {
+    "piscola":              ["Hielo", "Combinado", "Negra"],
+    "terremoto":            ["Piña", "Pipeño", "Réplica"],
+    "chela":                ["Rubia", "Schop", "Grado"],
+    "jote":                 ["Ave", "Tinto", "Cola"],
+    "borgoña":              ["Frutilla", "Jarra", "Azúcar"],
+    "asado de cumpleaños":  ["Parrilla", "Humo", "Velas"],
+    "picoteo":              ["Snack", "Mesa", "Antesala"],
+    "ramada":               ["Fonda", "Septiembre", "Paja"],
+    "quinceañera":          ["Vals", "Vestido", "Gala"],
+    "previa":               ["Casa", "Antes", "Trago"],
+    "parranda":             ["Noche", "Juerga", "Ruta"],
+    "convite":              ["Comida", "Invita", "Mesa"],
+    "curado perdido":       ["Pasado", "Vino", "Caída"],
+    "bailar cueca":         ["Pañuelo", "Giro", "Zapateo"],
+    "karaoke":              ["Voz", "Letra", "Micro"],
+    "fiesta de promoción":  ["Colegio", "Traje", "Baile"]
+  },
+  "Películas y Series": {
+    "Avatar":                  ["Azul", "Pandora", "Nativo"],
+    "Titanic":                 ["Hielo", "Océano", "Hundir"],
+    "Shrek":                   ["Ogro", "Pantano", "Burro"],
+    "Harry Potter":            ["Magia", "Lentes", "Castillo"],
+    "El rey león":             ["Rugido", "Selva", "Trono"],
+    "Game of Thrones":         ["Trono", "Dragón", "Muro"],
+    "Breaking Bad":            ["Cristal", "Químico", "Sombrero"],
+    "Stranger Things":         ["Niños", "Ochenta", "Revés"],
+    "La Casa de Papel":        ["Atraco", "Máscara", "Atraco"],
+    "Juegos del Calamar":      ["Deuda", "Corea", "Juego"],
+    "Toy Story":               ["Juguete", "Vaquero", "Espacio"],
+    "Friends":                 ["Café", "Seis", "Nueva-York"],
+    "Narcos":                  ["Polvo", "Cartel", "Patrón"],
+    "Élite":                   ["Colegio", "Ricos", "Crimen"],
+    "El Señor de los Anillos": ["Anillo", "Viaje", "Monte"],
+    "el chavo del 8":           ["Barril", "Pobre", "Vecindad"]
+  }
 };
 
 // ======================================================
@@ -416,40 +425,48 @@ const CATEGORIAS = {
 let miId = sessionStorage.getItem('pid') || genId();
 sessionStorage.setItem('pid', miId);
 
-let miNombre   = '';
-let codigoSala = '';
-let esHost     = false;
-let juegoData  = null;   // { categoria, palabra, impostores, ronda }
-let hostId     = null;
+let miNombre = '', codigoSala = '', esHost = false;
+let juegoData = null, hostId = null;
+let listenerSala = null, listenerJuego = null, listenerEstado = null;
 
-let listenerSala   = null;
-let listenerJuego  = null;
-let listenerEstado = null;
-
-// ======================================================
-// HELPERS
-// ======================================================
-function genId() {
-  return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-}
-
+function genId() { return Math.random().toString(36).substr(2,9) + Date.now().toString(36); }
 function genCodigo() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let c = '';
-  for (let i = 0; i < 4; i++) c += chars[Math.floor(Math.random() * chars.length)];
-  return c;
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:4}, () => c[Math.floor(Math.random()*c.length)]).join('');
 }
-
-function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function rand(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+function randKey(obj) { const k = Object.keys(obj); return k[Math.floor(Math.random()*k.length)]; }
 
 function ir(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(screenId).classList.add('active');
 }
-
 function setError(id, msg) {
   document.getElementById(id).textContent = msg;
-  if (msg) setTimeout(() => { const el = document.getElementById(id); if (el) el.textContent = ''; }, 3500);
+  if (msg) setTimeout(() => { const el = document.getElementById(id); if(el) el.textContent=''; }, 3500);
+}
+
+// ======================================================
+// INICIALIZAR SELECTOR DE CATEGORÍAS
+// ======================================================
+function initCatSelector() {
+  const cont = document.getElementById('cat-selector');
+  cont.innerHTML = '';
+  Object.keys(CATEGORIAS).forEach(cat => {
+    const id = 'cat_' + cat.replace(/\s+/g,'_');
+    cont.innerHTML += `
+      <div>
+        <input type="checkbox" class="cat-check" id="${id}" value="${cat}" checked>
+        <label class="cat-label" for="${id}">
+          <span class="cat-dot"></span>${cat}
+        </label>
+      </div>`;
+  });
+}
+initCatSelector();
+
+function seleccionarTodas(val) {
+  document.querySelectorAll('.cat-check').forEach(c => c.checked = val);
 }
 
 // ======================================================
@@ -458,50 +475,34 @@ function setError(id, msg) {
 async function crearSala() {
   const nombre = document.getElementById('inp-nombre-crear').value.trim();
   if (!nombre) { setError('err-crear', 'Ingresa tu nombre po'); return; }
+  miNombre = nombre; esHost = true;
+  codigoSala = genCodigo(); hostId = miId;
 
-  miNombre   = nombre;
-  esHost     = true;
-  codigoSala = genCodigo();
-  hostId     = miId;
-
-  await db.ref(`salas/${codigoSala}`).set({
-    host: miId,
-    estado: 'esperando',
-    creadoEn: Date.now()
-  });
-
+  await db.ref(`salas/${codigoSala}`).set({ host: miId, estado: 'esperando', creadoEn: Date.now() });
   const ref = db.ref(`salas/${codigoSala}/jugadores/${miId}`);
   await ref.set({ nombre: miNombre, unidoEn: Date.now() });
   ref.onDisconnect().remove();
-
   mostrarEspera();
 }
 
 // ======================================================
-// UNIRSE A SALA
+// UNIRSE
 // ======================================================
 async function unirseSala() {
   const nombre = document.getElementById('inp-nombre-unirse').value.trim();
   const codigo = document.getElementById('inp-codigo').value.trim().toUpperCase();
-
   if (!nombre) { setError('err-unirse', 'Ingresa tu nombre po'); return; }
   if (codigo.length !== 4) { setError('err-unirse', 'El código tiene 4 caracteres'); return; }
 
   const snap = await db.ref(`salas/${codigo}`).once('value');
   if (!snap.exists()) { setError('err-unirse', 'Sala no encontrada'); return; }
-
   const sala = snap.val();
   if (sala.estado !== 'esperando') { setError('err-unirse', 'El juego ya empezó'); return; }
 
-  miNombre   = nombre;
-  codigoSala = codigo;
-  esHost     = false;
-  hostId     = sala.host;
-
+  miNombre = nombre; codigoSala = codigo; esHost = false; hostId = sala.host;
   const ref = db.ref(`salas/${codigoSala}/jugadores/${miId}`);
   await ref.set({ nombre: miNombre, unidoEn: Date.now() });
   ref.onDisconnect().remove();
-
   mostrarEspera();
 }
 
@@ -511,41 +512,34 @@ async function unirseSala() {
 function mostrarEspera() {
   document.getElementById('display-codigo').textContent = codigoSala;
   ir('screen-espera');
-
-  // Mostrar/ocultar controles según rol
   document.getElementById('controles-host').style.display = esHost ? 'block' : 'none';
   document.getElementById('texto-espera').style.display   = esHost ? 'none'  : 'block';
 
-  // Listener jugadores
   if (listenerSala) db.ref(`salas/${codigoSala}/jugadores`).off('value', listenerSala);
   listenerSala = db.ref(`salas/${codigoSala}/jugadores`).on('value', snap => {
-    const jugadores = snap.val() || {};
-    renderLista(jugadores, 'lista-espera');
-    renderLista(jugadores, 'lista-jugando');
-    const n = Object.keys(jugadores).length;
-    document.getElementById('count-jugadores').textContent = n + (n === 1 ? ' jugador' : ' jugadores');
-    document.getElementById('jugando-count').textContent = n + (n === 1 ? ' jugador' : ' jugadores');
+    const j = snap.val() || {};
+    renderLista(j, 'lista-espera');
+    renderLista(j, 'lista-jugando');
+    const n = Object.keys(j).length;
+    document.getElementById('count-jugadores').textContent = n + (n===1?' jugador':' jugadores');
+    document.getElementById('jugando-count').textContent   = n + (n===1?' jugador':' jugadores');
     if (esHost) {
       document.getElementById('btn-girar').disabled = n < 3;
       document.getElementById('hint-min').style.display = n < 3 ? 'block' : 'none';
     }
   });
 
-  // Listener estado (para detectar inicio de ronda)
   if (listenerEstado) db.ref(`salas/${codigoSala}/estado`).off('value', listenerEstado);
   listenerEstado = db.ref(`salas/${codigoSala}/estado`).on('value', snap => {
     const estado = snap.val();
     if (estado === 'revelando') {
       ir('screen-revelar');
     } else if (estado === 'esperando') {
-      const screenActual = document.querySelector('.screen.active')?.id;
-      if (screenActual && screenActual !== 'screen-espera') {
-        ir('screen-espera');
-      }
+      const act = document.querySelector('.screen.active')?.id;
+      if (act && act !== 'screen-espera' && act !== 'screen-config') ir('screen-espera');
     }
   });
 
-  // Listener juego (para cargar datos)
   if (listenerJuego) db.ref(`salas/${codigoSala}/juego`).off('value', listenerJuego);
   listenerJuego = db.ref(`salas/${codigoSala}/juego`).on('value', snap => {
     if (snap.exists()) juegoData = snap.val();
@@ -556,42 +550,46 @@ function renderLista(jugadores, listaId) {
   const lista = document.getElementById(listaId);
   if (!lista) return;
   lista.innerHTML = Object.entries(jugadores)
-    .sort((a, b) => a[1].unidoEn - b[1].unidoEn)
-    .map(([id, j]) => {
-      const esAnfitrion = id === hostId;
-      const esTu = id === miId;
+    .sort((a,b) => a[1].unidoEn - b[1].unidoEn)
+    .map(([id,j]) => {
+      const esAnf = id === hostId, esTu = id === miId;
       return `<li>
-        <span>${esAnfitrion ? '👑' : '🎮'}</span>
+        <span>${esAnf ? '👑' : '🎮'}</span>
         <span>${j.nombre}</span>
-        ${esTu ? '<span class="badge tu">tú</span>' : (esAnfitrion ? '<span class="badge">anfitrión</span>' : '')}
+        ${esTu ? '<span class="badge tu">tú</span>' : (esAnf ? '<span class="badge">anfitrión</span>' : '')}
       </li>`;
     }).join('');
 }
 
 // ======================================================
-// INICIAR JUEGO (solo host)
+// INICIAR JUEGO
 // ======================================================
 async function iniciarJuego() {
+  // Validar categorías seleccionadas
+  const seleccionadas = [...document.querySelectorAll('.cat-check:checked')].map(c => c.value);
+  if (seleccionadas.length === 0) { setError('err-config', 'Selecciona al menos una categoría'); return; }
+
+  // Dificultad seleccionada (índice de pista: 0 fácil, 1 medio, 2 difícil)
+  const difRadio = document.querySelector('input[name="dificultad"]:checked');
+  const difIdx   = difRadio ? parseInt(difRadio.value) : 1;
+  const difNombre = ['Fácil 🟢','Medio 🟡','Difícil 🔴','Sin pista 🚫'][difIdx];
+
+  // Elegir categoría y palabra al azar de las seleccionadas
+  const cat   = seleccionadas[Math.floor(Math.random() * seleccionadas.length)];
+  const pal   = randKey(CATEGORIAS[cat]);
+  const pista = difIdx === 3 ? null : CATEGORIAS[cat][pal][difIdx];
+
+  // Asignar impostores
   const snap = await db.ref(`salas/${codigoSala}/jugadores`).once('value');
-  const jugadores = snap.val() || {};
-  const ids = Object.keys(jugadores);
-
-  // Elegir categoría y palabra
-  const cats = Object.keys(CATEGORIAS);
-  const cat  = rand(cats);
-  const pal  = rand(CATEGORIAS[cat]);
-
-  // Impostores: 1 si <7 jugadores, 2 si >=7
-  const nImpostores = ids.length >= 7 ? 2 : 1;
-  const shuffled    = [...ids].sort(() => Math.random() - 0.5);
-  const impostores  = {};
-  shuffled.slice(0, nImpostores).forEach(id => impostores[id] = true);
+  const ids  = Object.keys(snap.val() || {});
+  const nImp = ids.length >= 7 ? 2 : 1;
+  const shuffled = [...ids].sort(() => Math.random() - 0.5);
+  const impostores = {};
+  shuffled.slice(0, nImp).forEach(id => impostores[id] = true);
 
   await db.ref(`salas/${codigoSala}/juego`).set({
-    categoria: cat,
-    palabra:   pal,
-    impostores,
-    ronda: (juegoData?.ronda || 0) + 1
+    palabra: pal, pista, dificultad: difNombre,
+    impostores, ronda: (juegoData?.ronda || 0) + 1
   });
 
   await db.ref(`salas/${codigoSala}/estado`).set('revelando');
@@ -602,74 +600,57 @@ async function iniciarJuego() {
 // ======================================================
 function revelarCarta() {
   if (!juegoData) return;
+  const soyImp = juegoData.impostores?.[miId];
+  const contenido = document.getElementById('carta-contenido');
 
-  const soyImpostor = juegoData.impostores && juegoData.impostores[miId];
-  const contenido   = document.getElementById('carta-contenido');
-
-  if (soyImpostor) {
+  if (soyImp) {
+    const pistaSec = juegoData.pista
+      ? `<div class="carta-pista-label">Tu pista (${juegoData.dificultad || 'Medio 🟡'})</div>
+         <div class="carta-pista">"${juegoData.pista}"</div>
+         <div style="color:var(--muted);font-size:0.75rem;margin-top:10px;">Esta pista te da un indicio del tema. Úsala con cuidado.</div>`
+      : `<div style="color:var(--muted);font-size:0.85rem;margin-top:10px;">No tienes ninguna pista. Pura cara de palo. 🎭</div>`;
     contenido.innerHTML = `
       <div class="carta-icon">🕵️</div>
-      <div class="carta-categoria" style="margin-bottom:6px;">Categoría: ${juegoData.categoria}</div>
       <div class="carta-impostor-titulo">ERES EL IMPOSTOR</div>
-      <div style="color:var(--muted); font-size:0.82rem; margin-top:10px;">
-        No sabes la palabra. Escucha las pistas y disimula.
-      </div>
-    `;
+      <div style="color:var(--muted);font-size:0.82rem;margin-bottom:10px;">No sabes la palabra. Disimula.</div>
+      ${pistaSec}`;
   } else {
     contenido.innerHTML = `
       <div class="carta-icon">📋</div>
-      <div class="carta-categoria">Categoría: ${juegoData.categoria}</div>
+      <div style="color:var(--muted);font-size:0.85rem;margin-bottom:6px;">La palabra secreta es:</div>
       <div class="carta-palabra">${juegoData.palabra}</div>
-      <div style="color:var(--muted); font-size:0.82rem; margin-top:10px;">
+      <div style="color:var(--muted);font-size:0.82rem;margin-top:10px;">
         Da pistas sin decirla directamente.
-      </div>
-    `;
+      </div>`;
   }
 
   ir('screen-carta');
 }
 
-function verCartaDeNuevo() {
-  ir('screen-carta');
-}
+function irACartaNuevo() { ir('screen-carta'); }
 
 function irAJugando() {
-  if (juegoData) {
-    document.getElementById('jugando-cat').textContent = juegoData.categoria;
-  }
   document.getElementById('controles-host-jugando').style.display = esHost ? 'block' : 'none';
   ir('screen-jugando');
 }
 
-// ======================================================
-// NUEVA RONDA
-// ======================================================
 async function nuevaRonda() {
   await db.ref(`salas/${codigoSala}/estado`).set('esperando');
 }
 
-// ======================================================
-// SALIR
-// ======================================================
 async function salirSala() {
   if (listenerSala)   db.ref(`salas/${codigoSala}/jugadores`).off('value', listenerSala);
   if (listenerEstado) db.ref(`salas/${codigoSala}/estado`).off('value', listenerEstado);
   if (listenerJuego)  db.ref(`salas/${codigoSala}/juego`).off('value', listenerJuego);
-
   await db.ref(`salas/${codigoSala}/jugadores/${miId}`).remove();
-
-  // Si era el host, borrar la sala entera
   if (esHost) await db.ref(`salas/${codigoSala}`).remove();
-
-  codigoSala = ''; esHost = false; juegoData = null; hostId = null;
+  codigoSala=''; esHost=false; juegoData=null; hostId=null;
   ir('screen-inicio');
 }
 
-// Input código en mayúsculas automático
 document.getElementById('inp-codigo').addEventListener('input', function() {
   this.value = this.value.toUpperCase();
 });
 </script>
 </body>
 </html>
-
