@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Impostor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    :root {
+      --bg: #0e0e0e;
+      --surface: #1a1a1a;
+      --border: #2e2e2e;
+      --accent: #e63946;
+      --accent2: #f4a261;
+      --text: #f0f0f0;
+      --muted: #888;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 0.25s ease;
+    }
+    .screen.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Typography */
+    .titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      letter-spacing: 4px;
+      color: var(--accent);
+      text-align: center;
+      line-height: 1;
+    }
+    .subtitulo {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 6px;
+      margin-bottom: 36px;
+    }
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    /* Inputs */
+    input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--accent); }
+    input.codigo-input {
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    /* Botones */
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    button:active:not(:disabled) { transform: scale(0.98); }
+    button:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-rojo { background: var(--accent); color: white; }
+    .btn-gris { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .btn-verde { background: #2d6a4f; color: white; }
+
+    /* Código de sala */
+    .sala-codigo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 12px;
+      color: var(--accent);
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 12px 12px;
+      margin-bottom: 4px;
+    }
+    .sala-codigo-label {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-bottom: 24px;
+    }
+
+    /* Lista jugadores */
+    .player-list { list-style: none; margin-bottom: 18px; }
+    .player-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+    .player-list li .badge {
+      font-size: 0.7rem;
+      background: var(--border);
+      color: var(--muted);
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+    .player-list li .badge.tu { background: #1d3a2f; color: #52b788; }
+
+    /* Carta */
+    .carta {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
+    }
+    .carta:hover { border-color: var(--accent); }
+    .carta-icon { font-size: 3.5rem; margin-bottom: 14px; }
+    .carta-tap { color: var(--muted); font-size: 0.9rem; margin-bottom: 6px; }
+    .carta-hint { color: var(--border); font-size: 0.8rem; margin-top: 10px; }
+
+    .carta-palabra {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 2px;
+      color: var(--accent2);
+      margin: 10px 0 4px;
+    }
+    .carta-impostor-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin: 10px 0 4px;
+    }
+    .carta-categoria { color: var(--muted); font-size: 0.85rem; }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 18px 0;
+    }
+
+    /* Error */
+    .error {
+      color: var(--accent);
+      font-size: 0.85rem;
+      text-align: center;
+      margin-bottom: 10px;
+      min-height: 20px;
+    }
+
+    /* Espera status */
+    .espera-status {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+    .hint-text {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    /* Jugando categoria pill */
+    .cat-pill {
+      display: inline-block;
+      background: #1d1d1d;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .cat-pill span { color: var(--text); font-weight: 600; }
+
+    /* Contador jugadores */
+    .jugadores-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .jugadores-count {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================
+     PANTALLA: Inicio
+============================= -->
+<div class="screen active" id="screen-inicio">
+  <div class="titulo">El Impostor</div>
+  <p class="subtitulo">¿Quién se la sabe y quién la está inventando?</p>
+  <button class="btn-rojo" onclick="ir('screen-crear')">Crear sala</button>
+  <button class="btn-gris" onclick="ir('screen-unirse')">Unirse a sala</button>
+</div>
+
+<!-- ============================
+     PANTALLA: Crear sala
+============================= -->
+<div class="screen" id="screen-crear">
+  <h2>Nueva sala</h2>
+  <input type="text" id="inp-nombre-crear" placeholder="Tu nombre" maxlength="20" autocomplete="off">
+  <p class="error" id="err-crear"></p>
+  <button class="btn-rojo" onclick="crearSala()">Crear sala</button>
+  <button class="btn-gris" onclick="ir('screen-inicio')">Volver</button>
+</div>
+
+<!-- ============================
+     PANTALLA: Unirse
+============================= -->
+<div class="screen" id="screen-unirse">
+  <h2>Unirse a sala</h2>
+  <input type="text" id="inp-nombre-unirse" placeholder="Tu nombre" maxlength="20" autocomplete="off">
+  <input type="text" class="codigo-input" id="inp-codigo" placeholder="SALA" maxlength="4" autocomplete="off">
+  <p class="error" id="err-unirse"></p>
+  <button class="btn-rojo" onclick="unirseSala()">Unirse</button>
+  <button class="btn-gris" onclick="ir('screen-inicio')">Volver</button>
+</div>
+
+<!-- ============================
+     PANTALLA: Sala de espera
+============================= -->
+<div class="screen" id="screen-espera">
+  <div class="sala-codigo" id="display-codigo">----</div>
+  <p class="sala-codigo-label">Código de sala — compártelo con los demás</p>
+
+  <div class="jugadores-header">
+    <h2>Jugadores</h2>
+    <span class="jugadores-count" id="count-jugadores">0 jugadores</span>
+  </div>
+  <ul class="player-list" id="lista-espera"></ul>
+
+  <div id="controles-host" style="display:none">
+    <p class="hint-text" id="hint-min">Necesitas al menos 3 jugadores para empezar</p>
+    <button class="btn-verde" id="btn-girar" onclick="iniciarJuego()" disabled>Girar la tómbola 🎡</button>
+  </div>
+  <p class="espera-status" id="texto-espera">Esperando que el anfitrión inicie el juego...</p>
+</div>
+
+<!-- ============================
+     PANTALLA: Revelar carta
+============================= -->
+<div class="screen" id="screen-revelar">
+  <div class="carta" onclick="revelarCarta()">
+    <div class="carta-icon">🃏</div>
+    <div class="carta-tap">Toca para ver tu carta</div>
+    <div class="carta-hint">Asegúrate que nadie más vea tu pantalla</div>
+  </div>
+</div>
+
+<!-- ============================
+     PANTALLA: Carta (jugador o impostor)
+============================= -->
+<div class="screen" id="screen-carta">
+  <div id="carta-contenido" class="carta" style="cursor:default; margin-bottom:16px;"></div>
+  <p style="color:var(--muted); font-size:0.82rem; text-align:center; margin-bottom:14px;">
+    Memoriza bien tu carta antes de continuar
+  </p>
+  <button class="btn-rojo" onclick="irAJugando()">Listo ✓</button>
+</div>
+
+<!-- ============================
+     PANTALLA: Jugando
+============================= -->
+<div class="screen" id="screen-jugando">
+  <h2>En juego</h2>
+  <div class="cat-pill">Categoría: <span id="jugando-cat"></span></div>
+
+  <div class="jugadores-header">
+    <h2>Jugadores</h2>
+    <span class="jugadores-count" id="jugando-count">0</span>
+  </div>
+  <ul class="player-list" id="lista-jugando"></ul>
+
+  <hr class="divider">
+  <button class="btn-gris" onclick="verCartaDeNuevo()">Ver mi carta de nuevo 👁</button>
+  <div id="controles-host-jugando" style="display:none">
+    <button class="btn-verde" onclick="nuevaRonda()">Nueva ronda 🔄</button>
+  </div>
+  <button class="btn-gris" style="margin-top:6px; color:var(--accent); border-color:var(--accent)" onclick="salirSala()">Salir de la sala</button>
+</div>
+
+<!-- ============================
+     DATOS JUEGO (ocultos)
+============================= -->
+
+<script>
+// ======================================================
+// FIREBASE CONFIG — Reemplaza con los datos de tu proyecto
+// ======================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyAhtM59sHae66NJ1UA9IZGkbPEqoxtM_bo",
+  authDomain: "impostor-64c40.firebaseapp.com",
+  databaseURL: "https://impostor-64c40-default-rtdb.firebaseio.com",
+  projectId: "impostor-64c40",
+  storageBucket: "impostor-64c40.firebasestorage.app",
+  messagingSenderId: "72187753360",
+  appId: "1:72187753360:web:b9a2b7dc15d1f9129c3915",
+  measurementId: "G-KZ3EMF1JHL"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ======================================================
+// CATEGORÍAS (Español Chileno)
+// ======================================================
+const CATEGORIAS = {
+  "Comida Chilena": [
+    "asado", "empanada", "cazuela", "humita", "sopaipilla",
+    "mote con huesillos", "pastel de choclo", "charquicán",
+    "completo italiano", "chorrillana", "prietas", "longaniza",
+    "porotos granados", "pantrucas", "milcao", "pebre", "chancho en piedra"
+  ],
+  "Lugares de Chile": [
+    "Valparaíso", "Pucón", "Torres del Paine", "San Pedro de Atacama",
+    "Chiloé", "Viña del Mar", "La Serena", "Antofagasta",
+    "Puerto Montt", "Temuco", "el Cajón del Maipo", "Isla de Pascua",
+    "Zapallar", "Tongoy", "Dichato", "Maitencillo", "Copiapó"
+  ],
+  "Chilenismos": [
+    "bacán", "caña", "carrete", "fome", "luca", "penca",
+    "pololo", "taco", "al tiro", "de una", "cachái", "pelambre",
+    "copete", "choro", "estar curado", "pasar piola", "hacerse el leso",
+    "a la pinta", "raja", "gallo"
+  ],
+  "Animales de Chile": [
+    "puma", "cóndor", "huemul", "pudú", "chinchilla",
+    "zorro", "lobo marino", "pingüino",
+    "flamenco", "coipo",
+    "guanaco", "queltehue", "diucón", "chuncho"
+  ],
+  "Oficios y Trabajos": [
+    "profe", "doctor", "panadero", "mecánico", "carpintero",
+    "carabinero", "bombero", "enfermera", "abogado", "contador",
+    "gásfiter", "electricista", "taxista", "cocinero", "veterinario",
+    "cartero", "alcalde", "cura"
+  ],
+  "Deporte": [
+    "fútbol", "tenis", "básquetbol", "boxeo", "ciclismo",
+    "natación", "esquí", "atletismo", "vóleibol", "rugby",
+    "rodeo", "rayuela", "handball", "escalada", "palín"
+  ],
+  "El Carrete": [
+    "piscola", "terremoto", "chela", "jote", "borgoña",
+    "asado de cumpleaños", "picoteo", "ramada", "quinceañera",
+    "previa", "parranda", "convite", "curado perdido",
+    "bailar cueca", "karaoke", "fiesta de promoción"
+  ],
+  "Películas y Series": [
+    "Avatar", "Titanic", "Shrek", "Harry Potter", "El rey león",
+    "Game of Thrones", "Breaking Bad", "Stranger Things",
+    "La Casa de Papel", "Squid Game", "Toy Story", "Friends",
+    "Narcos", "Élite", "El Señor de los Anillos", "Better Call Saul"
+  ]
+};
+
+// ======================================================
+// ESTADO LOCAL
+// ======================================================
+let miId = sessionStorage.getItem('pid') || genId();
+sessionStorage.setItem('pid', miId);
+
+let miNombre   = '';
+let codigoSala = '';
+let esHost     = false;
+let juegoData  = null;   // { categoria, palabra, impostores, ronda }
+let hostId     = null;
+
+let listenerSala   = null;
+let listenerJuego  = null;
+let listenerEstado = null;
+
+// ======================================================
+// HELPERS
+// ======================================================
+function genId() {
+  return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+}
+
+function genCodigo() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let c = '';
+  for (let i = 0; i < 4; i++) c += chars[Math.floor(Math.random() * chars.length)];
+  return c;
+}
+
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function ir(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function setError(id, msg) {
+  document.getElementById(id).textContent = msg;
+  if (msg) setTimeout(() => { const el = document.getElementById(id); if (el) el.textContent = ''; }, 3500);
+}
+
+// ======================================================
+// CREAR SALA
+// ======================================================
+async function crearSala() {
+  const nombre = document.getElementById('inp-nombre-crear').value.trim();
+  if (!nombre) { setError('err-crear', 'Ingresa tu nombre po'); return; }
+
+  miNombre   = nombre;
+  esHost     = true;
+  codigoSala = genCodigo();
+  hostId     = miId;
+
+  await db.ref(`salas/${codigoSala}`).set({
+    host: miId,
+    estado: 'esperando',
+    creadoEn: Date.now()
+  });
+
+  const ref = db.ref(`salas/${codigoSala}/jugadores/${miId}`);
+  await ref.set({ nombre: miNombre, unidoEn: Date.now() });
+  ref.onDisconnect().remove();
+
+  mostrarEspera();
+}
+
+// ======================================================
+// UNIRSE A SALA
+// ======================================================
+async function unirseSala() {
+  const nombre = document.getElementById('inp-nombre-unirse').value.trim();
+  const codigo = document.getElementById('inp-codigo').value.trim().toUpperCase();
+
+  if (!nombre) { setError('err-unirse', 'Ingresa tu nombre po'); return; }
+  if (codigo.length !== 4) { setError('err-unirse', 'El código tiene 4 caracteres'); return; }
+
+  const snap = await db.ref(`salas/${codigo}`).once('value');
+  if (!snap.exists()) { setError('err-unirse', 'Sala no encontrada'); return; }
+
+  const sala = snap.val();
+  if (sala.estado !== 'esperando') { setError('err-unirse', 'El juego ya empezó'); return; }
+
+  miNombre   = nombre;
+  codigoSala = codigo;
+  esHost     = false;
+  hostId     = sala.host;
+
+  const ref = db.ref(`salas/${codigoSala}/jugadores/${miId}`);
+  await ref.set({ nombre: miNombre, unidoEn: Date.now() });
+  ref.onDisconnect().remove();
+
+  mostrarEspera();
+}
+
+// ======================================================
+// SALA DE ESPERA
+// ======================================================
+function mostrarEspera() {
+  document.getElementById('display-codigo').textContent = codigoSala;
+  ir('screen-espera');
+
+  // Mostrar/ocultar controles según rol
+  document.getElementById('controles-host').style.display = esHost ? 'block' : 'none';
+  document.getElementById('texto-espera').style.display   = esHost ? 'none'  : 'block';
+
+  // Listener jugadores
+  if (listenerSala) db.ref(`salas/${codigoSala}/jugadores`).off('value', listenerSala);
+  listenerSala = db.ref(`salas/${codigoSala}/jugadores`).on('value', snap => {
+    const jugadores = snap.val() || {};
+    renderLista(jugadores, 'lista-espera');
+    renderLista(jugadores, 'lista-jugando');
+    const n = Object.keys(jugadores).length;
+    document.getElementById('count-jugadores').textContent = n + (n === 1 ? ' jugador' : ' jugadores');
+    document.getElementById('jugando-count').textContent = n + (n === 1 ? ' jugador' : ' jugadores');
+    if (esHost) {
+      document.getElementById('btn-girar').disabled = n < 3;
+      document.getElementById('hint-min').style.display = n < 3 ? 'block' : 'none';
+    }
+  });
+
+  // Listener estado (para detectar inicio de ronda)
+  if (listenerEstado) db.ref(`salas/${codigoSala}/estado`).off('value', listenerEstado);
+  listenerEstado = db.ref(`salas/${codigoSala}/estado`).on('value', snap => {
+    const estado = snap.val();
+    if (estado === 'revelando') {
+      ir('screen-revelar');
+    } else if (estado === 'esperando') {
+      const screenActual = document.querySelector('.screen.active')?.id;
+      if (screenActual && screenActual !== 'screen-espera') {
+        ir('screen-espera');
+      }
+    }
+  });
+
+  // Listener juego (para cargar datos)
+  if (listenerJuego) db.ref(`salas/${codigoSala}/juego`).off('value', listenerJuego);
+  listenerJuego = db.ref(`salas/${codigoSala}/juego`).on('value', snap => {
+    if (snap.exists()) juegoData = snap.val();
+  });
+}
+
+function renderLista(jugadores, listaId) {
+  const lista = document.getElementById(listaId);
+  if (!lista) return;
+  lista.innerHTML = Object.entries(jugadores)
+    .sort((a, b) => a[1].unidoEn - b[1].unidoEn)
+    .map(([id, j]) => {
+      const esAnfitrion = id === hostId;
+      const esTu = id === miId;
+      return `<li>
+        <span>${esAnfitrion ? '👑' : '🎮'}</span>
+        <span>${j.nombre}</span>
+        ${esTu ? '<span class="badge tu">tú</span>' : (esAnfitrion ? '<span class="badge">anfitrión</span>' : '')}
+      </li>`;
+    }).join('');
+}
+
+// ======================================================
+// INICIAR JUEGO (solo host)
+// ======================================================
+async function iniciarJuego() {
+  const snap = await db.ref(`salas/${codigoSala}/jugadores`).once('value');
+  const jugadores = snap.val() || {};
+  const ids = Object.keys(jugadores);
+
+  // Elegir categoría y palabra
+  const cats = Object.keys(CATEGORIAS);
+  const cat  = rand(cats);
+  const pal  = rand(CATEGORIAS[cat]);
+
+  // Impostores: 1 si <7 jugadores, 2 si >=7
+  const nImpostores = ids.length >= 7 ? 2 : 1;
+  const shuffled    = [...ids].sort(() => Math.random() - 0.5);
+  const impostores  = {};
+  shuffled.slice(0, nImpostores).forEach(id => impostores[id] = true);
+
+  await db.ref(`salas/${codigoSala}/juego`).set({
+    categoria: cat,
+    palabra:   pal,
+    impostores,
+    ronda: (juegoData?.ronda || 0) + 1
+  });
+
+  await db.ref(`salas/${codigoSala}/estado`).set('revelando');
+}
+
+// ======================================================
+// REVELAR CARTA
+// ======================================================
+function revelarCarta() {
+  if (!juegoData) return;
+
+  const soyImpostor = juegoData.impostores && juegoData.impostores[miId];
+  const contenido   = document.getElementById('carta-contenido');
+
+  if (soyImpostor) {
+    contenido.innerHTML = `
+      <div class="carta-icon">🕵️</div>
+      <div class="carta-categoria" style="margin-bottom:6px;">Categoría: ${juegoData.categoria}</div>
+      <div class="carta-impostor-titulo">ERES EL IMPOSTOR</div>
+      <div style="color:var(--muted); font-size:0.82rem; margin-top:10px;">
+        No sabes la palabra. Escucha las pistas y disimula.
+      </div>
+    `;
+  } else {
+    contenido.innerHTML = `
+      <div class="carta-icon">📋</div>
+      <div class="carta-categoria">Categoría: ${juegoData.categoria}</div>
+      <div class="carta-palabra">${juegoData.palabra}</div>
+      <div style="color:var(--muted); font-size:0.82rem; margin-top:10px;">
+        Da pistas sin decirla directamente.
+      </div>
+    `;
+  }
+
+  ir('screen-carta');
+}
+
+function verCartaDeNuevo() {
+  ir('screen-carta');
+}
+
+function irAJugando() {
+  if (juegoData) {
+    document.getElementById('jugando-cat').textContent = juegoData.categoria;
+  }
+  document.getElementById('controles-host-jugando').style.display = esHost ? 'block' : 'none';
+  ir('screen-jugando');
+}
+
+// ======================================================
+// NUEVA RONDA
+// ======================================================
+async function nuevaRonda() {
+  await db.ref(`salas/${codigoSala}/estado`).set('esperando');
+}
+
+// ======================================================
+// SALIR
+// ======================================================
+async function salirSala() {
+  if (listenerSala)   db.ref(`salas/${codigoSala}/jugadores`).off('value', listenerSala);
+  if (listenerEstado) db.ref(`salas/${codigoSala}/estado`).off('value', listenerEstado);
+  if (listenerJuego)  db.ref(`salas/${codigoSala}/juego`).off('value', listenerJuego);
+
+  await db.ref(`salas/${codigoSala}/jugadores/${miId}`).remove();
+
+  // Si era el host, borrar la sala entera
+  if (esHost) await db.ref(`salas/${codigoSala}`).remove();
+
+  codigoSala = ''; esHost = false; juegoData = null; hostId = null;
+  ir('screen-inicio');
+}
+
+// Input código en mayúsculas automático
+document.getElementById('inp-codigo').addEventListener('input', function() {
+  this.value = this.value.toUpperCase();
+});
+</script>
+</body>
+</html>
